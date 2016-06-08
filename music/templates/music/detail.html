@@ -1,0 +1,32 @@
+<img src= "{{album.album_logo}}"/>
+
+<h1> {{album.album_title}} </h1>
+<h2> {{album.artist}} :</h2>
+
+<!--<u1>
+	{% for song in album.songs_set.all %}
+		<li> {{song.song_title}} - {{song.file_type}} </li>
+	{% endfor %}
+</u1> -->
+
+{% if error_message%}
+	<p><strong> {{error_message}} </strong></p>	
+{%endif%}
+
+
+
+<form action= "{% url 'music:favorite' album.id %}"  method= "post"> 
+	{%csrf_token %}
+	{% for song in album.songs_set.all %}
+		<input type = "radio" id="song{{ forloop.counter}}" name= "song" value= {{song.id}} >
+		<label for="song{{ forloop.counter}} "> 
+			{{song.song_title}} - {{song.file_type}}
+			{% if song.is_favorite %}
+				<img src= "https://wiki.ceh.ac.uk/s/en_GB/3398/84f448c1067609161db7eeaf020f96b084eef29d.11/_/images/icons/emoticons/star_blue.png"/>
+
+			{%endif%}
+		</label><br>
+	{%endfor%}
+	<input type= "submit" value= "Favorite" >
+</form>
+
